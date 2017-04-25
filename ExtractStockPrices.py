@@ -29,6 +29,13 @@ for row in AMEX:
 		NamesWithTags[row[1]] = row[0]
 
 Company = raw_input("Please enter the formal name of a company, for example enter\n\nBarnes & Noble, Inc.\n\ninstead of\n\nBarnes & Noble\n:")
-Stock = Share(NamesWithTags[Company])
+try:
+	Stock = Share(NamesWithTags[Company])
+except KeyError:
+	Tag = raw_input(Company + " isn't the formal name of any company we have stored. However if you know " + Company + "'s stock tag you can enter it here (or enter -1 to quit): ")
+	if Tag == "-1":
+		exit(0)
+	NamesWithTags[Company] = Tag
+	Stock = Share(NamesWithTags[Company])
 WeekPrices = [li['Close'] for li in Stock.get_historical('2017-4-15', '2017-4-22')]
 print WeekPrices
