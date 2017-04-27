@@ -8,6 +8,7 @@ import sys
 import jsonpickle
 import os
 import csv
+import time
 
 maxTweets = 1000000 # Some arbitrary large number
 tweetsPerQry = 100  # this is the max the twitter API permits
@@ -28,13 +29,10 @@ searchQuery = '#'
 searchQuery += raw_input("Please enter the company name you want to search for: ")
 
 # The date range we are searching for
-print "Enter today's date"
-day_string = raw_input("Day (dd): ")
-day = int(day_string)
-month_string = raw_input("Month (mm): ")
-month = int(month_string)
-year_string = raw_input("Year (yyyy): ")
-year = int(year_string)
+print (time.strftime("%Y-%m-%d")) #Todays date
+day = int(time.strftime("%d"))
+month = int(time.strftime("%m"))
+year = int(time.strftime("%Y"))
 end_date = date(year, month, day+1)
 start_date = date(year, month, day-7)
 
