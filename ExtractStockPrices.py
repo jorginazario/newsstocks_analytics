@@ -37,5 +37,22 @@ except KeyError:
 		exit(0)
 	NamesWithTags[Company] = Tag
 	Stock = Share(NamesWithTags[Company])
-WeekPrices = [li['Close'] for li in Stock.get_historical('2017-4-15', '2017-4-22')]
+
+#StartDay = raw_input("Start Day (dd): ")
+#StartMonth = raw_input("Start Month (mm): ")
+#EndDay = raw_input("End Day (dd): ")
+#EndMonth = raw_input("End Month (mm): ")
+#Year = raw_input("Current Year (yyyy): ")
+
+stockDict = Stock.get_historical
+
+WeekPrices = [li['Close'] for li in Stock.get_historical('2017-04-20', '2017-04-25')]
 print WeekPrices
+stockDict =  Stock.get_historical('2017-04-20', '2017-04-25')
+
+with open('stock.csv', 'w') as saveFile:
+	for i in range(len(stockDict)):
+		writer = csv.writer(saveFile, delimiter = ',')
+		writer.writerows([[stockDict[i]["Date"], stockDict[i]["Close"]]])
+
+saveFile.close()
