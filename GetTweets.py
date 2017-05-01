@@ -4,6 +4,7 @@
 
 import tweepy
 from datetime import timedelta, date
+import datetime as DT
 import sys
 import jsonpickle
 import os
@@ -34,7 +35,7 @@ day = int(time.strftime("%d"))
 month = int(time.strftime("%m"))
 year = int(time.strftime("%Y"))
 end_date = date(year, month, day+1)
-start_date = date(year, month, day-7)
+start_date = end_date- DT.timedelta(days=7)
 
 delta = timedelta(days=1)
 from_date = start_date

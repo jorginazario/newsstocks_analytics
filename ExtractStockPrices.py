@@ -2,6 +2,9 @@
 
 from yahoo_finance import Share
 import csv
+from datetime import timedelta, date
+import datetime as DT
+import time
 
 companylist = open('NASDAQ.csv')
 NASDAQ = csv.reader(companylist)
@@ -38,17 +41,18 @@ except KeyError:
 	NamesWithTags[Company] = Tag
 	Stock = Share(NamesWithTags[Company])
 
-#StartDay = raw_input("Start Day (dd): ")
-#StartMonth = raw_input("Start Month (mm): ")
-#EndDay = raw_input("End Day (dd): ")
-#EndMonth = raw_input("End Month (mm): ")
-#Year = raw_input("Current Year (yyyy): ")
+print (time.strftime("%Y-%m-%d")) #Todays date
+day = int(time.strftime("%d"))
+month = int(time.strftime("%m"))
+year = int(time.strftime("%Y"))
+end_date = date(year, month, day+1)
+start_date = end_date- DT.timedelta(days=7)
 
-stockDict = Stock.get_historical
+#stockDict = Stock.get_historical
 
-WeekPrices = [li['Close'] for li in Stock.get_historical('2017-04-20', '2017-04-25')]
+WeekPrices = [li['Close'] for li in Stock.get_historical(str(start_date), str(end_date))]
 print WeekPrices
-stockDict =  Stock.get_historical('2017-04-20', '2017-04-25')
+stockDict =  Stock.get_historical(str(start_date), str(end_date))
 
 with open('stock.csv', 'w') as saveFile:
 	for i in range(len(stockDict)):
