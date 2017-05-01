@@ -1,5 +1,6 @@
 import os
 import csv
+import matplotlib.pyplot as plt
 
 os.system("python GetTweets.py")
 os.system("python ExtractStockPrices.py")
@@ -34,17 +35,13 @@ tweetNum = []
 counter=0
 looper=0
 for l in tempTweetDay:
-	print l
-	print stockDay[counter]
-	if l is stockDay[counter]:
-		print "in it"
+	if l == stockDay[counter]:
 		tweetNum.append(tempTweetNum[looper])
-		counter = counter+1
+		if counter < len(stockDay)-1:
+			counter = counter+1
 	looper = looper+1
 
 print (tweetNum)
-
-exit()
 
 #PLOTTING
 plt.figure(1)
@@ -54,7 +51,7 @@ plt.title('Tweets on Company per Day')
 plt.xlabel('Date')
 plt.ylabel('Number of tweets')
 plt.grid(True)
-plt.bar(dayList, tweetNum, 0.5, color='blue')
+plt.bar(range(len(tweetNum)), tweetNum, 0.5, color='blue')
 plt.tight_layout()
 
 
@@ -64,6 +61,6 @@ plt.title('Closeing Stock Price per Day')
 plt.xlabel('Date')
 plt.ylabel('Closing Stock price($)')
 plt.grid(True)
-plt.plot(stockDay, stockPrice, 'g')
+plt.plot(range(len(stockPrice)), stockPrice, 'g')
 plt.tight_layout()
 plt.show()
