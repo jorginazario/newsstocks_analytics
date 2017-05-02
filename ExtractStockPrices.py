@@ -48,8 +48,6 @@ end_date = date(year, month, day)				# Sets the end_date as the current date
 start_date = end_date- DT.timedelta(days=7)		# Sets the start_date as 7 days before the end_date
 
 
-WeekPrices = [li['Close'] for li in Stock.get_historical(str(start_date), str(end_date))]
-print WeekPrices
 stockDict =  Stock.get_historical(str(start_date), str(end_date))		# Gets the stock data in the given date range
 
 with open('stock.csv', 'w') as saveFile:								# Opens a csv file to save the output in
