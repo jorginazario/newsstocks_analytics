@@ -1,7 +1,7 @@
 # This program retrieves the number of mentions of a company in twitter for
-#each day over the past week. The tweets are saved in tweets.txt file and the
-#number of mentions per day in data.txt file.
+#each day over the past week. The number of mentions per day are saved in data.txt file.
 
+#LIBRARIES
 import tweepy
 from datetime import timedelta, date
 import datetime as DT
@@ -12,9 +12,7 @@ import csv
 import time
 
 maxTweets = 1000000 # Some arbitrary large number
-tweetsPerQry = 100  # this is the max the twitter API permits
-fName = 'tweets.txt' # We'll store the tweets in a text file.
-fName2 = 'data.txt'  # Where the number of tweets per day will be saved
+tweetsPerQry = 100  # this is the max number of tweets the twitter API permits to retrieve per query
 
 API_KEY = 'rF1UhAhVJsmie822K1bXN5lvd' # To access the twitter API
 API_SECRET = 'UykH43jgHn5SWYHTprLyfrQPWKl7V2ODu2MhJVTqIJosjbLn5a'
@@ -27,7 +25,7 @@ if (not api):
 
 # The company we are searching for
 searchQuery = '#'
-searchQuery += raw_input("Please enter the company name you want to search for: ")
+searchQuery += raw_input("Please enter the hashtag you want to search for: ")
 
 # The date range we are searching for
 print (time.strftime("%Y-%m-%d")) #Todays date
@@ -35,19 +33,18 @@ day = int(time.strftime("%d"))
 month = int(time.strftime("%m"))
 year = int(time.strftime("%Y"))
 end_date = date(year, month, day+1)
-start_date = end_date- DT.timedelta(days=7)
+start_date = end_date- DT.timedelta(days=8)
 
 delta = timedelta(days=1)
 from_date = start_date
 to_date = from_date + delta
 
-#with open(fName, 'w') as f:
-with open('data.csv', 'w') as saveFile:
+with open('data.csv', 'w') as saveFile:  #data.csv file is where the number of tweets per day will be saved
 	# Loop to navigate through the week to search for the number of tweets per day
 	while to_date <= end_date:
 		tweetCount = 0 # To keep track of the number of tweets
-		sinceId = None # If results from a specific ID onwards are reqd, set since_id to that ID. Else default to no lower limit, go as far back as API allows
-		max_id = -1L # If results only below a specific ID are, set max_id to that ID. else default to no upper limit, start from the most recent tweet matching the search query.
+		sinceId = None # If results from a specific ID onwards are required, set since_id to that ID.
+		max_id = -1L # If results below a specific ID are required, set max_id to that ID.
 		print("Downloading max {0} tweets".format(maxTweets))
 		while tweetCount < maxTweets:
 			try:
@@ -66,12 +63,10 @@ with open('data.csv', 'w') as saveFile:
 					print("No more tweets found")
 					break
 
-			#	for tweet in new_tweets:
-			#		f.write(jsonpickle.encode(tweet.created_at, unpicklable=False) + ': ' + jsonpickle.encode(tweet.text, unpicklable=False) + '\n')
-
-				tweetCount += len(new_tweets)
+				tweetCount += len(new_tweets)  #count the number of tweets found for the previous search
 				print ("Downloaded {0} tweets".format(tweetCount))
-				max_id = new_tweets[-1].id
+				max_id = new_tweets[-1].id  #set max_id to lowest max_id from previous search. This means the search starts with the oldest tweet for the day
+                # and loops until it finds the newest tweet for each day
 
 			except tweepy.TweepError as e:
 				print("Some error : " + str(e))
@@ -80,7 +75,6 @@ with open('data.csv', 'w') as saveFile:
 		print("There were: ", tweetCount, " tweets for ", from_date.strftime("%Y-%m-%d"))
 		writer = csv.writer(saveFile, delimiter = ',')
 		writer.writerows([[from_date.strftime("%Y-%m-%d"), str(tweetCount)]])
-#		saveFile.write(from_date.strftime("%Y-%m-%d") + ': ' + str(tweetCount) + '\n')
 
 		to_date += delta
 		from_date += delta
