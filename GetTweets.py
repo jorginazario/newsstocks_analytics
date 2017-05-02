@@ -28,7 +28,7 @@ searchQuery = '#'
 searchQuery += raw_input("Please enter the hashtag you want to search for: ")
 
 # The date range we are searching for
-print (time.strftime("%Y-%m-%d"))               #Todays date
+print (time.strftime("%Y-%m-%d"))                      #Todays date
 day = int(time.strftime("%d"))
 month = int(time.strftime("%m"))
 year = int(time.strftime("%Y"))
@@ -39,12 +39,12 @@ delta = timedelta(days=1)
 from_date = start_date
 to_date = from_date + delta
 
-with open('data.csv', 'w') as saveFile:         #data.csv file is where the number of tweets per day will be saved
+with open('data.csv', 'w') as saveFile:                 #data.csv file is where the number of tweets per day will be saved
 	# Loop to navigate through the week to search for the number of tweets per day
 	while to_date <= end_date:
-		tweetCount = 0                           # To keep track of the number of tweets
-		sinceId = None                           # If results from a specific ID onwards are required, set since_id to that ID.
-		max_id = -1L                            # If results below a specific ID are required, set max_id to that ID.
+		tweetCount = 0                                  # To keep track of the number of tweets
+		sinceId = None                                  # If results from a specific ID onwards are required, set since_id to that ID.
+		max_id = -1L                                    # If results below a specific ID are required, set max_id to that ID.
 		print("Downloading max {0} tweets".format(maxTweets))
 		while tweetCount < maxTweets:
 			try:
@@ -63,10 +63,10 @@ with open('data.csv', 'w') as saveFile:         #data.csv file is where the numb
 					print("No more tweets found")
 					break
 
-				tweetCount += len(new_tweets)     #count the number of tweets found for the previous search and add them to the total count for the day
+				tweetCount += len(new_tweets)            #count the number of tweets found for the previous search and add them to the total count for the day
 				print ("Downloaded {0} tweets".format(tweetCount))
-				max_id = new_tweets[-1].id        #set max_id to lowest max_id from previous search. This means the search starts with the oldest tweet for the day
-                # and loops until it finds the newest tweet for each day
+				max_id = new_tweets[-1].id               #set max_id to lowest max_id from previous search. This means the search starts with the oldest tweet for the day
+                                                         # and loops until it finds the newest tweet for each day
 
 			except tweepy.TweepError as e:
 				print("Some error : " + str(e))
@@ -76,7 +76,7 @@ with open('data.csv', 'w') as saveFile:         #data.csv file is where the numb
 		writer = csv.writer(saveFile, delimiter = ',')     # save the number of tweets found for the day in data.csv file
 		writer.writerows([[from_date.strftime("%Y-%m-%d"), str(tweetCount)]])
 
-		to_date += delta                      # loop through next date
+		to_date += delta                                   # loop through next date
 		from_date += delta
 
 saveFile.close()
