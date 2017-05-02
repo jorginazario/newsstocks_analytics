@@ -58,7 +58,7 @@ plt.tight_layout()						#helps with formatting the two subplots
 
 plt.figure(1)
 plt.subplot(212)
-plt.title('Closeing Stock Price per Day')
+plt.title('Closing Stock Price per Day')
 plt.xlabel('Date')
 plt.ylabel('Closing Stock price($)')
 plt.grid(True)
